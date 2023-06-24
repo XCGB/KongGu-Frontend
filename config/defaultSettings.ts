@@ -14,6 +14,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: '常大空谷',
   pwa: false,
+  // splitMenus: true,
   logo: 'https://teaching-project-web-tlias.oss-cn-beijing.aliyuncs.com/image/Logo.png',
   iconfontUrl: '',
 };

@@ -54,8 +54,8 @@ declare namespace API {
    */
   interface PostAddRequest {
     content: string;
-    // photo: string;
     userId: number;
+    tags: string[];
   }
 
   /**
@@ -69,6 +69,7 @@ declare namespace API {
     viewNum: number;
     thumbNum: number;
     userId: number;
+    tags: string[]; // 添加tags属性
     createTime: Date;
     updateTime: Date;
   }
@@ -120,6 +121,35 @@ declare namespace API {
     updateTime?: Date;
   }
 
+  /**
+   * 标签
+   */
+  type Tag = {
+    id: number;
+    tagName: string;
+    userId: number;
+    postNum: number;
+    createTime?: Date;
+    updateTime?: Date;
+  }
+
+
+  /**
+   * 标签请求
+   */
+  type TagSearchRequest = {
+    tagName: string;
+  }
+  /**
+   * 标签请求
+   */
+  type TagDeleteRequest = {
+    id: number;
+  }
+
+  type PostSearchRequest = {
+    id: number;
+  }
 
   // 对接后端通用返回类
   type BaseResponse<T> = {

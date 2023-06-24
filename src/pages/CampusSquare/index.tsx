@@ -4,12 +4,10 @@ import React, {useState} from 'react';
 import ListVertical from '../../components/ListVertical';
 import TagColorful from '../../components/TagColorful';
 import {currentUser} from "@/services/ant-design-pro/api";
-import CreateModal from "@/pages/HomePage/components/CreateModal";
-
+import CreateModal from "@/pages/CampusSquare/components/CreateModal";
 
 const result = await currentUser();
 const loginUser = result.data;
-
 
 const SquarePage: React.FC = () => {
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
@@ -36,7 +34,6 @@ const SquarePage: React.FC = () => {
       <ListVertical />
       <CreateModal
         modalVisible={createModalVisible}
-        // columns={columnsNeeded}
         onSubmit={() => setCreateModalVisible(false)}
         onCancel={() => setCreateModalVisible(false)}
       />

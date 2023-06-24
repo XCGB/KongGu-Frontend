@@ -21,16 +21,10 @@ export default [
   },
   {
     path: '/welcome',
-    name: 'home-page',
+    name: 'Campus-Square',
     icon: 'smile',
-    component: './HomePage/',
+    component: './CampusSquare/',
   },
-  // {
-  //   path: '/home',
-  //   name: 'home-page',
-  //   icon: 'smile',
-  //   component: './HomePage/',
-  // },
   {
     path: '/admin',
     name: 'admin',
@@ -41,14 +35,17 @@ export default [
       {
         path: '/admin/user-manage',
         name: 'user-management',
-        icon: 'smile',
         component: './Admin/UserManager',
       },
       {
         path: '/admin/post-manage',
         name: 'post-management',
-        icon: 'smile',
         component: './Admin/PostManager',
+      },
+      {
+        path: '/admin/tag-manage',
+        name: 'tag-management',
+        component: './Admin/TagManager',
       },
       {
         component: './404',
@@ -60,8 +57,24 @@ export default [
     redirect: '/welcome',
   },
   {
+    path: '/home-page',
+    name: 'home-page',
+    icon: 'home',
+    routes: [
+      {
+        path: '/home-page/posts',
+        name: 'postList',
+        icon: 'smile',
+        component: './HomePage/MyPosts'
+      },
+      {
+        component: './404',
+      },
+    ]
+  },
+  {
     name: 'account.settings',
-    icon: 'smile',
+    icon: 'setting',
     path: '/account/settings',
     component: './Account',
   },

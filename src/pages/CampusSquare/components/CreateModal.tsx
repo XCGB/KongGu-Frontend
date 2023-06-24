@@ -1,6 +1,6 @@
-import {addPost} from "@/services/ant-design-pro/api";
-import {Button, message, Modal} from 'antd';
-import React, {PropsWithChildren, useState} from 'react';
+import { addPost, listTags } from "@/services/ant-design-pro/api";
+import { Button, message, Modal, Select } from 'antd';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import TextArea from "antd/es/input/TextArea";
 
 interface CreateModalProps {
@@ -18,7 +18,7 @@ const handleAdd = async (fields: API.Post) => {
   try {
     const result = await addPost({ ...fields } as API.PostAddRequest);
     hide();
-    if (result){
+    if (result) {
       message.success('发布成功');
       return true;
     }
@@ -37,7 +37,18 @@ const handleAdd = async (fields: API.Post) => {
  */
 const CreateModal: React.FC<PropsWithChildren<CreateModalProps>> = (props) => {
   const { modalVisible, onSubmit, onCancel } = props;
-  const [content, setContent] = useState("");// 添加状态变量来存储输入的值
+  const [content, setContent] = useState("");
+  const [tagList, setTagList] = useState<API.Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<{ id: string }[]>([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const result = await listTags();
+      setTagList(result);
+    };
+
+    fetchTags();
+  }, []);
 
   return (
     <Modal
@@ -49,11 +60,12 @@ const CreateModal: React.FC<PropsWithChildren<CreateModalProps>> = (props) => {
       footer={[
         <Button key="cancel" onClick={() => onCancel()}>取消</Button>,
         <Button key="submit" type="primary" onClick={async () => {
-          // @ts-ignore
           const post: API.Post = {
-            reviewStatus: 1, //暂时设置为1，不用审核直接通过
-            content: content // 使用输入的文本内容作为 content 的值
+            reviewStatus: 1,
+            content: content,
+            tags: selectedTags // 直接使用selectedTags作为tags字段的值
           };
+          console.log(post)
           const success = await handleAdd(post);
           if (success) {
             onSubmit?.();
@@ -66,9 +78,22 @@ const CreateModal: React.FC<PropsWithChildren<CreateModalProps>> = (props) => {
         autoSize={{ minRows: 12, maxRows: 30 }}
         showCount
         maxLength={8192}
-        value={content} // 将输入的值绑定到 TextArea 组件的 value 属性
-        onChange={(e) => setContent(e.target.value)} // 在输入变化时更新状态变量的值
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
       />
+      <Select
+        mode="tags"
+        placeholder="选择标签"
+        style={{ width: "100%", marginTop: 16 }}
+        value={selectedTags.map(tag => tag.id)} // 从selectedTags中提取出标签的ID作为Select的值
+        onChange={(values) => setSelectedTags(values.map(tagId => ({ id: tagId })))} // 将选择的标签ID包装成对象存储到selectedTags中
+      >
+        {tagList.map((tag) => (
+          <Select.Option key={tag.id} value={tag.id}>
+            {tag.tagName}
+          </Select.Option>
+        ))}
+      </Select>
     </Modal>
   );
 };

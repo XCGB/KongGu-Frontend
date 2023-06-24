@@ -286,7 +286,7 @@ export default () => {
         actionRef={actionRef}
         cardBordered
         request={async (params = {}, sort, filter) => {
-          console.log(params, sort, filter);
+          // console.log(params, sort, filter);
           const userList = await searchUsers(params);
           return {
             data: userList

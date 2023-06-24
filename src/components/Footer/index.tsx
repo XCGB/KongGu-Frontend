@@ -13,21 +13,9 @@ const Footer: React.FC = () => {
 
   return (
     <DefaultFooter
+      // style={{ height: '0px' }}
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
-        // {
-        //   key: 'Ant Design Pro',
-        //   title: 'Ant Design Pro',
-        //   href: 'https://www.code-nav.cn/',
-        //   blankTarget: true,
-        // },
-
-        // {
-        //   key: 'Ant Design',
-        //   title: '编程导航',
-        //   href: 'https://www.code-nav.cn/',
-        //   blankTarget: true,
-        // },
         {
           key: 'github',
           title: <><GithubOutlined /> 阿颉的github</>,

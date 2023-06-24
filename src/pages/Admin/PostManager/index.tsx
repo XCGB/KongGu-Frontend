@@ -64,7 +64,7 @@ const AdminPostPage: React.FC<unknown> = () => {
       width: 48,
     },
     {
-      title: '发布者id',
+      title: '发布者ID',
       dataIndex: 'userId',
       copyable: true
     },
@@ -80,15 +80,15 @@ const AdminPostPage: React.FC<unknown> = () => {
     },
     {
       title: '创建时间',
-      search: false,
       dataIndex: 'createTime',
-      valueType: 'dateTime',
+      valueType: 'date',
+      search: false,
     },
     {
       title: '更新时间',
       search: false,
       dataIndex: 'updateTime',
-      valueType: 'dateTime',
+      valueType: 'date',
     },
     {
       title: '审核状态',
@@ -142,23 +142,41 @@ const AdminPostPage: React.FC<unknown> = () => {
         request={async (params, sorter, filter) => {
           // 表单搜索项会从 params 传入，传递给后端接口。
           console.log(params, sorter, filter);
-          const postList = await listPost();
+          const postList = await listPost(params);
           return Promise.resolve({
             data: postList
           });
         }}
-        rowKey="key"
+        rowKey="index"
         pagination={{
           showQuickJumper: true,
         }}
+        editable={{
+          type: 'multiple',
+        }}
+        columnsState={{
+          persistenceKey: 'pro-table-singe-demos',
+          persistenceType: 'localStorage',
+        }}
         search={{
-          layout: 'vertical',
-          defaultCollapsed: false,
+          labelWidth: 'auto',
         }}
         dateFormatter="string"
         toolbar={{
           title: '帖子列表',
           tooltip: '',
+        }}
+        form={{
+          // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+          syncToUrl: (values, type) => {
+            if (type === 'get') {
+              return {
+                ...values,
+                created_at: [values.startTime, values.endTime],
+              };
+            }
+            return values;
+          },
         }}
       />
       <Modal

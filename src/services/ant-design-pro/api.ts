@@ -112,6 +112,7 @@ export async function addPost(params: API.PostAddRequest) {
   });
 }
 
+
 /** 查询所有帖子及发布者信息 GET /api/post/listByUser */
 export async function listPostWithUser(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.PostWithUser>>('/api/post/listByUser', {
@@ -151,12 +152,11 @@ export async function deletePost(params: API.PostDeleteRequest) {
   });
 }
 
-/** 查询所有帖子 GET /api/notices */
+/** 查询所有帖子 GET /api/post/list */
 export async function listPost(options?: { [key: string]: any }) {
-  return request<API.BaseResponse<API.Post>>('/api/post/list', {
+  return request<API.BaseResponse<API.Post[]>>('/api/post/list', {
     method: 'GET',
-    ...(options || {}),
-
+    params: options, // 将options作为查询参数传递给后端
   });
 }
 
@@ -175,15 +175,51 @@ export async function updatePost(params: API.PostUpdateRequest) {
 }
 
 /**
- * 审核帖子
+ * 搜索当前用户的帖子
  * @param params
  */
-export async function examinePost(params: API.PostExamineRequest) {
-  return request<API.BaseResponse<boolean>>(`/api/post/examine`, {
+export async function searchPost(params: API.PostSearchRequest) {
+  return request<API.BaseResponse<API.Post[]>>(`/api/post/search/`  + params.id, {
+    method: 'GET',
+    ...(params || {}),
+  });
+}
+
+/**
+ * 获取所有的标签
+ */
+export async function listTags(params: API.Tag) {
+  return request<API.BaseResponse<API.Tag[]>>(`/api/tag/list` , {
+    method: 'GET',
+    params: params, // 将options作为查询参数传递给后端
+  });
+}
+
+
+// /**
+//  * 创建
+//  * @param params
+//  */
+// export async function addTag(params: TagType.TagAddRequest) {
+//   return request<API.BaseResponse<number>>('/api/tag/add', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     data: params,
+//   });
+// }
+//
+
+
+
+export async function deleteTag(options?: number) {
+  return request<API.BaseResponse<boolean>>(`/api/tag/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    data: params,
+    data: {id: options}, // 将 options 作为请求体传递给后端，可以根据实际需求进行调整
   });
 }
+
