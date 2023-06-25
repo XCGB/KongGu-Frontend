@@ -36,41 +36,38 @@ const handleAdd = async (fields: API.Post) => {
  * @constructor
  */
 const CreateModal: React.FC<PropsWithChildren<CreateModalProps>> = (props) => {
-  const { modalVisible, onSubmit, onCancel } = props;
+  const { modalVisible, onSubmit, onCancel, tagList } = props;
+
   const [content, setContent] = useState("");
-  const [tagList, setTagList] = useState<API.Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<{ id: string }[]>([]);
-
-  useEffect(() => {
-    const fetchTags = async () => {
-      const result = await listTags();
-      setTagList(result);
-    };
-
-    fetchTags();
-  }, []);
 
   return (
     <Modal
       destroyOnClose
       title="发布内容"
       width={700}
-      open={modalVisible}
-      onCancel={() => onCancel()}
+      visible={modalVisible}
+      onCancel={onCancel}
       footer={[
-        <Button key="cancel" onClick={() => onCancel()}>取消</Button>,
-        <Button key="submit" type="primary" onClick={async () => {
-          const post: API.Post = {
-            reviewStatus: 1,
-            content: content,
-            tags: selectedTags // 直接使用selectedTags作为tags字段的值
-          };
-          console.log(post)
-          const success = await handleAdd(post);
-          if (success) {
-            onSubmit?.();
-          }
-        }}>发布</Button>
+        <Button key="cancel" onClick={onCancel}>取消</Button>,
+        <Button
+          key="submit"
+          type="primary"
+          onClick={async () => {
+            const post: API.Post = {
+              reviewStatus: 1,
+              content: content,
+              tags: selectedTags
+            };
+            console.log(post);
+            const success = await handleAdd(post);
+            if (success) {
+              onSubmit?.();
+            }
+          }}
+        >
+          发布
+        </Button>
       ]}
     >
       <TextArea
@@ -85,8 +82,10 @@ const CreateModal: React.FC<PropsWithChildren<CreateModalProps>> = (props) => {
         mode="tags"
         placeholder="选择标签"
         style={{ width: "100%", marginTop: 16 }}
-        value={selectedTags.map(tag => tag.id)} // 从selectedTags中提取出标签的ID作为Select的值
-        onChange={(values) => setSelectedTags(values.map(tagId => ({ id: tagId })))} // 将选择的标签ID包装成对象存储到selectedTags中
+        value={selectedTags.map((tag) => tag.id)}
+        onChange={(values) =>
+          setSelectedTags(values.map((tagId) => ({ id: tagId })))
+        }
       >
         {tagList.map((tag) => (
           <Select.Option key={tag.id} value={tag.id}>
@@ -97,5 +96,6 @@ const CreateModal: React.FC<PropsWithChildren<CreateModalProps>> = (props) => {
     </Modal>
   );
 };
+
 
 export default CreateModal;

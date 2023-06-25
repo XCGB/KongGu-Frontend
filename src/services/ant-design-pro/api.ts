@@ -118,7 +118,6 @@ export async function listPostWithUser(options?: { [key: string]: any }) {
   return request<API.BaseResponse<API.PostWithUser>>('/api/post/listByUser', {
     method: 'GET',
     ...(options || {}),
-
   });
 }
 
@@ -196,21 +195,28 @@ export async function listTags(params: API.Tag) {
 }
 
 
-// /**
-//  * 创建
-//  * @param params
-//  */
-// export async function addTag(params: TagType.TagAddRequest) {
-//   return request<API.BaseResponse<number>>('/api/tag/add', {
+/** 新增标签 POST /api/tag/add */
+export async function addTag(params: API.TagAddRequest) {
+  return request<API.BaseResponse<number>>('/api/tag/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: params,
+  });
+}
+
+// /** 新增用户 POST /api/user/append */
+// export async function appendUser(body: API.AppendParams, options?: { [key: string]: any }) {
+//   return request<API.BaseResponse<API.RegisterResult>>('/api/user/append', {
 //     method: 'POST',
 //     headers: {
 //       'Content-Type': 'application/json',
 //     },
-//     data: params,
+//     data: body,
+//     ...(options || {}),
 //   });
 // }
-//
-
 
 
 export async function deleteTag(options?: number) {
@@ -223,3 +229,15 @@ export async function deleteTag(options?: number) {
   });
 }
 
+export async function changeTagColor(tagId: string, tagColor: string) {
+  return request<API.BaseResponse<boolean>>(`/api/tag/changeColor`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: {
+      tagId: tagId,
+      tagColor: tagColor,
+    },
+  });
+}

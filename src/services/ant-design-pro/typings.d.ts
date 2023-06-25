@@ -18,6 +18,8 @@ declare namespace API {
     createTime: Date;
   };
 
+
+
   type LoginResult = {
     status?: string;
     type?: string;
@@ -89,6 +91,7 @@ declare namespace API {
     createTime: Date;
     updateTime: Date;
     user: CurrentUser;
+    tagList: Tag[];
     hasThumb: boolean;
   }
 
@@ -127,6 +130,7 @@ declare namespace API {
   type Tag = {
     id: number;
     tagName: string;
+    tagColor: string;
     userId: number;
     postNum: number;
     createTime?: Date;
@@ -137,8 +141,9 @@ declare namespace API {
   /**
    * 标签请求
    */
-  type TagSearchRequest = {
+  type TagAddRequest = {
     tagName: string;
+    tagColor: string;
   }
   /**
    * 标签请求

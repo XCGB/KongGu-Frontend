@@ -1,19 +1,24 @@
-@import (reference) 'index';
+@import (reference) '~antd/es/style/themes/index';
 .pre {
   margin: 12px 0;
   padding: 12px 20px;
   background: @input-bg;
   box-shadow: @card-shadow;
 }
-//
-//.container {
-//  display: flex;
-//  flex-direction: column;
-//  height: 100vh;
-//  overflow: auto;
-//  background: @layout-body-background;
-//}
-//
+
+.container {
+  :global {
+    background: white;
+    margin-bottom: 5px;
+    .ant-tag {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      margin-left: 10px;
+      font-size: 16px;
+    }
+  }
+}
+
 //.lang {
 //  width: 100%;
 //  height: 40px;

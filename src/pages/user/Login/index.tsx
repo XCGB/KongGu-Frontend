@@ -1,4 +1,4 @@
-import Footer from '@/components/Footer';
+// import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import {
   LockOutlined,
@@ -188,7 +188,7 @@ const Login: React.FC = () => {
           </div>
         </LoginForm>
       </div>
-          <Footer />
+
     </div>
   );
 };

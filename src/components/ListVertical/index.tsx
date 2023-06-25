@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./index.less";
-import { List, Avatar, Tag, Button, Space, message } from "antd";
+import {List, Avatar, Tag, Button, Space, message} from "antd";
 import {
   MessageOutlined,
   LikeOutlined,
   LikeFilled,
   FieldTimeOutlined,
 } from "@ant-design/icons";
-import { listPostWithUser, postDoThumb } from "@/services/ant-design-pro/api";
+import {listPostWithUser, postDoThumb} from "@/services/ant-design-pro/api";
+import {Link} from "umi";
 
-const IconText = ({ icon, text }) => (
-  <span style={{ display: 'flex', alignItems: 'center' }}>
-    {React.createElement(icon, { style: { marginRight: 8 } })}
+const IconText = ({icon, text}) => (
+  <span style={{display: 'flex', alignItems: 'center'}}>
+    {React.createElement(icon, {style: {marginRight: 8}})}
     {text}
   </span>
 );
@@ -48,6 +49,7 @@ const YourComponent = () => {
         const updatedPostList = result.map((post) => {
           // 判断当前帖子是否已点赞
           post.hasThumb = post.thumbNum > 0;
+          post.tagList = post.tagList.map((tag) => tag.tagName);
           return post;
         });
         setPostList(updatedPostList);
@@ -66,7 +68,7 @@ const YourComponent = () => {
    */
   const doThumb = async (post: API.PostWithUser) => {
     try {
-      const changeThumbNum = await postDoThumb({ postId: post.id });
+      const changeThumbNum = await postDoThumb({postId: post.id});
       if (changeThumbNum) {
         post.thumbNum += changeThumbNum;
         if (changeThumbNum === 1) {
@@ -81,6 +83,11 @@ const YourComponent = () => {
     } catch (error) {
       message.error("操作失败，请重试！");
     }
+  };
+
+  const handleItemClick = (postId) => {
+    // 根据帖子的 postId 导航到帖子的详细页面
+    history.push(`/posts/${postId}`);
   };
 
   return (
@@ -109,7 +116,7 @@ const YourComponent = () => {
                 />,
                 <Button type="text" onClick={() => doThumb(item)}>
                   <Space>
-                    {item.hasThumb ? <LikeFilled /> : <LikeOutlined />}
+                    {item.hasThumb ? <LikeFilled/> : <LikeOutlined/>}
                     {item.thumbNum}
                   </Space>
                 </Button>,
@@ -120,29 +127,30 @@ const YourComponent = () => {
                 />,
               ]}
             >
-              <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={item.user.avatar}
-                    style={{
-                      marginTop: "10px",
-                      width: 50,
-                      height: 50,
-                    }} // 自定义 avatar 样式
-                  />
-                }
-                title={item.user.username}
-                description={
-                  <span>
+              <Link to={`/posts/${item.id}`}>
+                <List.Item.Meta
+                  avatar={
+                    <Avatar
+                      src={item.user.avatar}
+                      style={{
+                        marginTop: "10px",
+                        width: 50,
+                        height: 50,
+                      }} // 自定义 avatar 样式
+                    />
+                  }
+                  title={item.user.nickname}
+                  description={
+                    <span>
                     <Tag color="geekblue">{item.user.grade}</Tag>
                     <Tag color="cyan">{item.user.college}</Tag>
                     <Tag color="cyan">{item.user.profession}</Tag>
                   </span>
-                }
-              />
-              {item.content}
-              <br />
-
+                  }
+                />
+                {item.content}
+                <br/>
+              </Link>
               <div></div>
               {isRecentPost(item.createTime) && (
                 <span>
@@ -154,6 +162,12 @@ const YourComponent = () => {
                   <Tag color="red">热门</Tag>
                 </span>
               )}
+              <span>
+                {item.tagList.map((tagName) => (
+                  <Tag key={tagName} color="cyan">{tagName}</Tag>
+                ))}
+              </span>
+
             </List.Item>
           )}
         />
