@@ -48,8 +48,10 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
-      const user = await login({ ...values, type });
-      if (user) {
+      const response = await login({ ...values, type });
+      // 存储token到localStorage
+      localStorage.setItem('token', response);
+      if (response) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -64,7 +66,7 @@ const Login: React.FC = () => {
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState(user);
+      setUserLoginState(response);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',

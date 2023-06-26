@@ -146,9 +146,9 @@ declare namespace API {
     tagColor: string;
   }
   /**
-   * 标签请求
+   * 帖子详细信息
    */
-  type TagDeleteRequest = {
+  type PostDetailRequest = {
     id: number;
   }
 

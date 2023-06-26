@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import {listPostWithUser, postDoThumb} from "@/services/ant-design-pro/api";
 import {Link} from "umi";
+import TagColorful from "@/components/TagColorful";
 
 const IconText = ({icon, text}) => (
   <span style={{display: 'flex', alignItems: 'center'}}>
@@ -49,7 +50,12 @@ const YourComponent = () => {
         const updatedPostList = result.map((post) => {
           // 判断当前帖子是否已点赞
           post.hasThumb = post.thumbNum > 0;
-          post.tagList = post.tagList.map((tag) => tag.tagName);
+          post.tagList = post.tagList.map((tag) => {
+            return {
+              tagName: tag.tagName,
+              tagColor: tag.tagColor
+            };
+          });
           return post;
         });
         setPostList(updatedPostList);
@@ -163,8 +169,8 @@ const YourComponent = () => {
                 </span>
               )}
               <span>
-                {item.tagList.map((tagName) => (
-                  <Tag key={tagName} color="cyan">{tagName}</Tag>
+                {item.tagList.map((tag) => (
+                  <Tag key={tag.tagName} color={tag.tagColor}>{tag.tagName}</Tag>
                 ))}
               </span>
 

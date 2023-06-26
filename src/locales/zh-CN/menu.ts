@@ -15,6 +15,7 @@ export default {
   'menu.admin.user-management': '用户管理',
   'menu.admin.post-management': '帖子管理',
   'menu.admin.tag-management': '标签管理',
+  'menu.post.detail': '帖子详情',
   'menu.exception.403': '403',
   'menu.exception.404': '404',
   'menu.exception.500': '500',

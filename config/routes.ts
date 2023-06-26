@@ -73,6 +73,13 @@ export default [
     ]
   },
   {
+    path: '/posts/:id',
+    name: 'post.detail',
+    icon: 'smile',
+    component: './PostDetail',
+    hideInMenu: true, // 设置 hideInMenu 属性为 true，表示该路由不显示在侧边导航中
+  },
+  {
     name: 'account.settings',
     icon: 'setting',
     path: '/account/settings',
@@ -81,4 +88,5 @@ export default [
   {
     component: './404',
   },
+
 ];

@@ -185,6 +185,18 @@ export async function searchPost(params: API.PostSearchRequest) {
 }
 
 /**
+ * 搜索单个帖子
+ * @param params
+ */
+export async function getPostDetail(params: API.PostDetailRequest) {
+  return request<API.BaseResponse<API.PostWithUser>>(`/api/post/detail/`  + params.id, {
+    method: 'GET',
+    ...(params || {}),
+  });
+}
+
+
+/**
  * 获取所有的标签
  */
 export async function listTags(params: API.Tag) {
